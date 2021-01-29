@@ -114,7 +114,11 @@ def mysql_proc(
             port=mysql_port,
             install_db=mysql_install_db
         )
-        with mysql_executor:
-            yield mysql_executor
+        try:
+            with mysql_executor:
+                yield mysql_executor
+        except Exception as e:
+            print(f"fail {e.output} {e.stderr}")
+            raise
 
     return mysql_proc_fixture
